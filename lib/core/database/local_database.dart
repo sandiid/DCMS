@@ -11,7 +11,7 @@ class LocalDatabase {
     final dbPath = join(await getDatabasesPath(), 'dcms.db');
     _database = await openDatabase(
       dbPath,
-      version: 2,
+      version: 3,
       onConfigure: (db) async => db.execute('PRAGMA foreign_keys = ON'),
       onCreate: (db, version) async {
         await db.execute('CREATE TABLE owners (id TEXT PRIMARY KEY, name TEXT NOT NULL, owner_type TEXT NOT NULL)');
@@ -46,6 +46,17 @@ class LocalDatabase {
         await db.execute('CREATE INDEX idx_chargers_brand ON chargers(brand)');
         await db.execute('CREATE INDEX idx_chargers_serial ON chargers(serial_number)');
         await db.execute('CREATE TABLE asset_counters (seq INTEGER PRIMARY KEY)');
+        await db.execute('''
+          CREATE TABLE charger_photos (
+            id TEXT PRIMARY KEY,
+            charger_id TEXT NOT NULL,
+            relative_path TEXT NOT NULL UNIQUE,
+            source TEXT NOT NULL,
+            created_at TEXT NOT NULL,
+            FOREIGN KEY(charger_id) REFERENCES chargers(id) ON DELETE CASCADE
+          )
+        ''');
+        await db.execute('CREATE INDEX idx_charger_photos_charger ON charger_photos(charger_id)');
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
@@ -61,6 +72,19 @@ class LocalDatabase {
             }
           }
           if (maxSeq > 0) await db.insert('asset_counters', {'seq': maxSeq});
+        }
+        if (oldVersion < 3) {
+          await db.execute('''
+            CREATE TABLE charger_photos (
+              id TEXT PRIMARY KEY,
+              charger_id TEXT NOT NULL,
+              relative_path TEXT NOT NULL UNIQUE,
+              source TEXT NOT NULL,
+              created_at TEXT NOT NULL,
+              FOREIGN KEY(charger_id) REFERENCES chargers(id) ON DELETE CASCADE
+            )
+          ''');
+          await db.execute('CREATE INDEX idx_charger_photos_charger ON charger_photos(charger_id)');
         }
       },
     );
