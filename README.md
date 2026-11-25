@@ -1,21 +1,33 @@
 # DCMS — Data Charger Management System
 
-Android application for tracking forklift battery chargers in a workshop.
+Local-first Flutter Android application for tracking forklift battery chargers in a workshop.
 
-## Project status
-Milestone 1: Foundation & Charger Inventory — preparation.
+## Development status
+**Milestone 1.3 source committed; build and device tests pending.** Not approved for real company data.
 
-## Planned stack
-- Flutter / Dart
-- SQLite (local-first)
-- Riverpod and go_router
-- QR asset identification
-- Supabase integration **not enabled** pending company authorization
+## Implemented source
+- Dashboard and searchable charger inventory
+- Register and edit charger records; permanent UUID and sequential internal asset codes
+- Charger detail view and on-screen QR generated from UUID
+- Offline QR scanner with local SQLite lookup
+- Camera/gallery photo attachments copied into app-private documents storage
+- SQLite schema v3 with photo metadata, asset identifiers and basic audit events
 
-## Milestone 1 scope
-Charger registration, ownership and location, permanent IDs, QR generation/scanning, photos, search, Excel import review, local backup/restore, audit foundation.
+## Planned next
+- Ownership and location selection
+- Printable/shareable QR labels
+- Excel import with review/deduplication
+- Reliable backup/restore covering SQLite **and** photos
+- Operator attribution, app hardening, tests and Android builds
 
-## Security
-This repository is public. Do not commit customer records, workshop spreadsheets, charger photos, local databases, backups, credentials, or proprietary procedures. Use synthetic fixtures only.
+## Stack
+Flutter/Dart, Riverpod, go_router, SQLite, image_picker, qr_flutter and mobile_scanner. No Supabase connection is active.
 
-See [Blueprint](docs/blueprint.md) and [Project Map](project-map.md).
+## Safety for public GitHub repository
+Do not commit company/customer records, workshop spreadsheets, real charger photos, credentials, local databases, or backups. Only synthetic fixtures belong here. Private Android app files may be included in system backup unless OS/manifest policies are explicitly configured; this must be addressed before any company-data pilot.
+
+## Docs
+- [Setup](docs/setup.md)
+- [Approved blueprint](docs/blueprint.md)
+- [M1.3 test plan](docs/m1.3-test-plan.md)
+- [Project map](project-map.md)
