@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../features/chargers/presentation/charger_create_screen.dart';
 import '../features/chargers/presentation/charger_list_screen.dart';
 import '../features/dashboard/presentation/dashboard_screen.dart';
 
-final _router = GoRouter(
-  routes: [
-    GoRoute(path: '/', builder: (context, state) => const DashboardScreen()),
-    GoRoute(path: '/chargers', builder: (context, state) => const ChargerListScreen()),
-  ],
-);
+final _router = GoRouter(routes: [
+  GoRoute(path: '/', builder: (context, state) => const DashboardScreen()),
+  GoRoute(path: '/chargers', builder: (context, state) => const ChargerListScreen()),
+  GoRoute(path: '/chargers/new', builder: (context, state) => const ChargerCreateScreen()),
+]);
 
 class DcmsApp extends StatelessWidget {
   const DcmsApp({super.key});
