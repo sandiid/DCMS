@@ -6,7 +6,6 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 import '../data/charger_repository.dart';
 import '../data/charger_photo_repository.dart';
-import 'charger_list_screen.dart';
 
 final chargerDetailProvider = FutureProvider.family<Map<String, Object?>?, String>(
   (ref, id) => ref.read(chargerRepositoryProvider).getById(id),
