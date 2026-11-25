@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../features/chargers/presentation/charger_create_screen.dart';
+import '../features/chargers/presentation/charger_detail_screen.dart';
+import '../features/chargers/presentation/charger_scan_screen.dart';
 import '../features/chargers/presentation/charger_list_screen.dart';
 import '../features/dashboard/presentation/dashboard_screen.dart';
 
@@ -8,6 +10,15 @@ final _router = GoRouter(routes: [
   GoRoute(path: '/', builder: (context, state) => const DashboardScreen()),
   GoRoute(path: '/chargers', builder: (context, state) => const ChargerListScreen()),
   GoRoute(path: '/chargers/new', builder: (context, state) => const ChargerCreateScreen()),
+  GoRoute(path: '/scan', builder: (context, state) => const ChargerScanScreen()),
+  GoRoute(
+    path: '/chargers/:id/edit',
+    builder: (context, state) => ChargerCreateScreen(chargerId: state.pathParameters['id']),
+  ),
+  GoRoute(
+    path: '/chargers/:id',
+    builder: (context, state) => ChargerDetailScreen(chargerId: state.pathParameters['id']!),
+  ),
 ]);
 
 class DcmsApp extends StatelessWidget {
