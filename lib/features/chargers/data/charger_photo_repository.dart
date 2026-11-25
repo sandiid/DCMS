@@ -69,10 +69,9 @@ class ChargerPhotoRepository {
     final id = const Uuid().v4();
     final relative = p.join(chargerId, '$id$ext');
     final destination = File(p.join((await _root()).path, relative));
-    await destination.parent.create(recursive: true);
-    await selected.saveTo(destination.path);
-
     try {
+      await destination.parent.create(recursive: true);
+      await selected.saveTo(destination.path);
       final db = await LocalDatabase.instance.database;
       await db.transaction((txn) async {
         final exists = await txn.query(
