@@ -19,6 +19,13 @@ class ChargerListScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Charger Inventory'),
         leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => context.go('/')),
+        actions: [
+          IconButton(
+            tooltip: 'Scan QR Charger',
+            icon: const Icon(Icons.qr_code_scanner),
+            onPressed: () => context.go('/scan'),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.go('/chargers/new'),
@@ -45,6 +52,8 @@ class ChargerListScreen extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     final row = rows[index];
                     return ListTile(
+                      onTap: () => context.go('/chargers/${row['id']}'),
+                      trailing: const Icon(Icons.chevron_right),
                       leading: const Icon(Icons.battery_charging_full),
                       title: Text(row['asset_code'] as String),
                       subtitle: Text('${row['brand']} · ${row['model'] ?? 'Model belum diisi'}'),
