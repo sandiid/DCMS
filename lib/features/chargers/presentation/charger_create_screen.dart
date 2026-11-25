@@ -78,7 +78,15 @@ class _ChargerCreateScreenState extends ConsumerState<ChargerCreateScreen> {
   Widget build(BuildContext context) {
     final editing = widget.chargerId != null;
     return Scaffold(
-      appBar: AppBar(title: Text(editing ? 'Edit Charger' : 'Tambah Charger')),
+      appBar: AppBar(
+        title: Text(editing ? 'Edit Charger' : 'Tambah Charger'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go(
+            editing ? '/chargers/${widget.chargerId}' : '/chargers',
+          ),
+        ),
+      ),
       body: loading
           ? const Center(child: CircularProgressIndicator())
           : loadError != null
