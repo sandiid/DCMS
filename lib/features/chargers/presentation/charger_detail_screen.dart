@@ -96,7 +96,13 @@ class _ChargerDetailScreenState extends ConsumerState<ChargerDetailScreen> {
     final photos = ref.watch(chargerPhotosProvider(widget.chargerId));
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Detail Charger')),
+      appBar: AppBar(
+        title: const Text('Detail Charger'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go('/chargers'),
+        ),
+      ),
       body: detail.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(child: Text('Gagal memuat charger: $error')),
