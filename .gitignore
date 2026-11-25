@@ -1,0 +1,39 @@
+# Dart / Flutter
+.dart_tool/
+.packages
+.pub-cache/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+**/android/local.properties
+**/android/key.properties
+*.jks
+*.keystore
+
+# Secrets and environment
+.env
+.env.*
+!.env.example
+*.local.json
+*.secret.json
+
+# Operational and customer data
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+backups/
+exports/
+imports/
+private_data/
+customer_data/
+workshop_data/
+*.xlsx
+*.xls
+*.csv
+*.zip
+
+# Generated or sensitive photos
+charger_photos/
+customer_photos/
