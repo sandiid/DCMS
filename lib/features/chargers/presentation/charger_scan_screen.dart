@@ -49,7 +49,13 @@ class _ChargerScanScreenState extends ConsumerState<ChargerScanScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: const Text('Scan QR Charger')),
+        appBar: AppBar(
+          title: const Text('Scan QR Charger'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => context.go('/chargers'),
+          ),
+        ),
         body: Stack(
           children: [
             MobileScanner(onDetect: onDetected),
