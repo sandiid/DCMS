@@ -22,6 +22,46 @@ class ChargerRepository {
     return (rows.first['total'] as int?) ?? 0;
   }
 
+  Future<Map<String, Object?>?> getById(String id) async {
+    final db = await LocalDatabase.instance.database;
+    final rows = await db.query('chargers', where: 'id = ?', whereArgs: [id], limit: 1);
+    return rows.isEmpty ? null : rows.first;
+  }
+
+  Future<void> update({
+    required String id,
+    required String brand,
+    required String model,
+    required String serialNumber,
+    required String chargerType,
+    required double? voltage,
+    required double? current,
+    required String notes,
+  }) async {
+    if (brand.trim().isEmpty) throw ArgumentError('Merk wajib diisi');
+    if (voltage != null && (!voltage.isFinite || voltage <= 0)) throw ArgumentError('Tegangan tidak valid');
+    if (current != null && (!current.isFinite || current <= 0)) throw ArgumentError('Arus tidak valid');
+    final db = await LocalDatabase.instance.database;
+    await db.transaction((txn) async {
+      final previous = await txn.query('chargers', where: 'id = ?', whereArgs: [id], limit: 1);
+      if (previous.isEmpty) throw StateError('Charger tidak ditemukan');
+      final values = <String, Object?>{
+        'brand': brand.trim(), 'model': model.trim().isEmpty ? null : model.trim(),
+        'serial_number': serialNumber.trim().isEmpty ? null : serialNumber.trim(),
+        'charger_type': chargerType, 'voltage': voltage, 'current': current,
+        'notes': notes.trim().isEmpty ? null : notes.trim(),
+      };
+      final changed = values.keys.where((key) => previous.first[key] != values[key]).toList();
+      if (changed.isEmpty) return;
+      final now = DateTime.now().toUtc().toIso8601String();
+      await txn.update('chargers', {...values, 'updated_at': now}, where: 'id = ?', whereArgs: [id]);
+      await txn.insert('charger_events', {
+        'id': const Uuid().v4(), 'charger_id': id, 'event_type': 'updated',
+        'occurred_at': now, 'details': 'Updated fields: ${changed.join(', ')}',
+      });
+    });
+  }
+
   Future<String> create({
     required String brand,
     required String model,
